@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(App());
 
@@ -22,9 +23,18 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?',
-      'What\'s your favorite band?',
+      {
+        'questionText': 'What\'s your favorite color?',
+        'answers': ['Black', 'Red', 'Yellow']
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Dog', 'Cat', 'Lions', 'Rabbit', 'Snake']
+      },
+      {
+        'questionText': 'What\'s your favorite band?',
+        'answers': ['SPBCH', 'KASABIAN', 'Joy Division', 'Caribou', 'Prodigy']
+      }
     ];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -33,19 +43,11 @@ class _AppState extends State<App> {
           title: Text('YAPIDY APP'),
         ),
         body: Column(children: [
-          Question(questions[_questionIndex]),
-          RaisedButton(
-            child: Text('Color answer'),
-            onPressed: () => _answerQuestion(0),
-          ),         
-          RaisedButton(
-            child: Text('Animal answer'),
-            onPressed: () => _answerQuestion(1),
-          ),
-          RaisedButton(
-            child: Text('Band answer'),
-            onPressed: () => _answerQuestion(2),
-          )
+          Question(questions[_questionIndex]['questionText']),
+          ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) {
+            return Answer(answer, () => _answerQuestion(_questionIndex));
+          }).toList()
         ]),
       ),
     );
